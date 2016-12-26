@@ -15,7 +15,8 @@ var server = http.createServer(app);
 
 var userId;
 var wss = new WebSocketServer({
-  server: server
+  server: server,
+  path: "/api"
 });
 wss.on("connection", function (ws) {
 

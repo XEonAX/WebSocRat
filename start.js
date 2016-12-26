@@ -18,7 +18,7 @@ cluster.on('disconnect', function (worker) {
 });
 
 if (cluster.isMaster && process.env.COMPUTERNAME != "XEON-LT") {
-  const workerCount = process.env.NODE_CLUSTER_WORKERS || 1; //4
+  const workerCount = process.env.NODE_CLUSTER_WORKERS || 4;
   console.log(`Starting ${workerCount} workers...`);
   for (let i = 0; i < workerCount; i++) {
     cluster.fork();
