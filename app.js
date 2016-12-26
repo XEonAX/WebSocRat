@@ -3,7 +3,7 @@ const WebSocketServer = require("ws").Server;
 const http = require("http");
 const express = require("express");
 const port = env.NODE_PORT || 3000;
-
+const ip = env.NODE_IP || "127.0.0.1";
 const app = express();
 app.use(express.static('static'));
 app.get('/health', function (req, res, next) {
@@ -49,5 +49,5 @@ wss.on("connection", function (ws) {
     console.log("websocket connection close");
   });
 });
-console.log("websocket server starting on port:" + port);
-server.listen(port);
+console.log("websocket server starting on " + ip + ":" + port);
+server.listen(port, ip);
