@@ -39,7 +39,8 @@ wss.on("connection", function (ws) {
 
     ws.send(JSON.stringify({
       msg: {
-        connectionId: userId
+        connectionId: userId,
+        zame:clientMsg
       }
     }));
 
