@@ -15,11 +15,10 @@ var server = http.createServer(app);
 
 var userId;
 var wss = new WebSocketServer({
-  server: server,
-  path: "/api"
+  server: server
 });
 wss.on("connection", function (ws) {
-
+console.log(ws.upgradeReq.url);
   console.info("websocket connection open");
 
   var timestamp = new Date().getTime();
@@ -51,5 +50,7 @@ wss.on("connection", function (ws) {
     console.log("websocket connection close");
   });
 });
+
+
 console.log("websocket server starting on " + ip + ":" + port);
 server.listen(port, ip);
