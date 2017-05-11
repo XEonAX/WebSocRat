@@ -5,6 +5,7 @@ const express = require("express");
 const port = env.NODE_PORT || 3000;
 const ip = env.NODE_IP || "127.0.0.1";
 const app = express();
+const crypto = require("crypto");
 app.use(express.static('static'));
 app.get('/health', function (req, res, next) {
   res.writeHead(200);
@@ -12,22 +13,25 @@ app.get('/health', function (req, res, next) {
 });
 
 var server = http.createServer(app);
-
-var userId;
+var connections = {};
 var wss = new WebSocketServer({
   server: server
 });
 wss.on("connection", function (ws) {
-console.log(ws.upgradeReq.url);
+  var connId = crypto.randomBytes(16).toString("hex");
+  connections[connId] = {
+    Id: connId,
+    ws: ws
+  };
+  console.log(ws.upgradeReq.url);
   console.info("websocket connection open");
 
   var timestamp = new Date().getTime();
-  userId = timestamp;
 
   ws.send(JSON.stringify({
     msgType: "onOpenConnection",
     msg: {
-      connectionId: timestamp
+      connectionId: connId
     }
   }));
 
@@ -39,7 +43,7 @@ console.log(ws.upgradeReq.url);
     ws.send(JSON.stringify({
       msg: {
         connectionId: userId,
-        zame:clientMsg
+        zame: clientMsg
       }
     }));
 
@@ -48,6 +52,17 @@ console.log(ws.upgradeReq.url);
 
   ws.on("close", function () {
     console.log("websocket connection close");
+    for (var connectionId in connections) {
+      if (connections.hasOwnProperty(connectionId)) {
+        var connection = connections[connectionId];
+        connection.ws.send(JSON.stringify({
+          type: "notif",
+          on: "close",
+          id: connId
+        }))
+      }
+    }
+    delete connections[connId];
   });
 });
 
