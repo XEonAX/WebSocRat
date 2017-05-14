@@ -3,10 +3,12 @@ const WebSocketServer = require("ws").Server;
 const http = require("http");
 const express = require("express");
 const port = env.NODE_PORT || 3000;
-const ip = env.NODE_IP || "127.0.0.1";
+const ip = env.NODE_IP || "0.0.0.0";
 const app = express();
 const crypto = require("crypto");
-app.use(express.static('static'));
+app.use(express.static('static'))
+// app.use('/static', express.static('static'))
+// app.use(express.static('bootstrap-gh-pages'));
 app.get('/health', function (req, res, next) {
   res.writeHead(200);
   res.end();
@@ -29,40 +31,46 @@ wss.on("connection", function (ws) {
   var timestamp = new Date().getTime();
 
   ws.send(JSON.stringify({
-    msgType: "onOpenConnection",
-    msg: {
-      connectionId: connId
-    }
+    type: "notif",
+    on: "open",
+    id: connId,
   }));
 
 
   ws.on("message", function (data, flags) {
-    console.log("websocket received a message");
-    var clientMsg = data;
-
-    ws.send(JSON.stringify({
-      msg: {
-        connectionId: userId,
-        zame: clientMsg
-      }
-    }));
-
-
+    console.log("websocket message received");
+    var msg = JSON.parse(data);
+    if (msg.type=="message" && msg.to=="ALL")
+    for (var connectionId in connections) {
+      if (connections.hasOwnProperty(connectionId)) {
+        var connection = connections[connectionId];
+        if (connection.ws.readyState == 1)
+          connection.ws.send(JSON.stringify({
+            type: "message",
+            message: msg.message,
+            timestamp: Date.now().toString(),
+            fromId: connId,
+            sender: msg.sender,
+            echo: connection.Id==connId
+          }));
+      };
+    };
   });
 
   ws.on("close", function () {
     console.log("websocket connection close");
+    delete connections[connId];
     for (var connectionId in connections) {
       if (connections.hasOwnProperty(connectionId)) {
         var connection = connections[connectionId];
-        connection.ws.send(JSON.stringify({
-          type: "notif",
-          on: "close",
-          id: connId
-        }))
-      }
-    }
-    delete connections[connId];
+        if (connection.ws.readyState == 1)
+          connection.ws.send(JSON.stringify({
+            type: "notif",
+            on: "close",
+            id: connId
+          }));
+      };
+    };
   });
 });
 
