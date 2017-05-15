@@ -6,6 +6,7 @@ const port = env.NODE_PORT || 8000;
 const ip = env.NODE_IP || "0.0.0.0";
 const app = express();
 const crypto = require("crypto");
+const faker = require('faker');
 app.use(express.static('static'))
 // app.use('/static', express.static('static'))
 // app.use(express.static('bootstrap-gh-pages'));
@@ -21,9 +22,11 @@ var wss = new WebSocketServer({
 });
 wss.on("connection", function (ws) {
   var connId = crypto.randomBytes(16).toString("hex");
+  var username = faker.internet.userName();
   connections[connId] = {
-    Id: connId,
-    ws: ws
+    id: connId,
+    ws: ws,
+    user : username
   };
   console.log(ws.upgradeReq.url);
   console.info("websocket connection open");
@@ -34,27 +37,28 @@ wss.on("connection", function (ws) {
     type: "notif",
     on: "open",
     id: connId,
+    user: username
   }));
 
 
   ws.on("message", function (data, flags) {
     console.log("websocket message received");
     var msg = JSON.parse(data);
-    if (msg.type=="message" && msg.to=="ALL")
-    for (var connectionId in connections) {
-      if (connections.hasOwnProperty(connectionId)) {
-        var connection = connections[connectionId];
-        if (connection.ws.readyState == 1)
-          connection.ws.send(JSON.stringify({
-            type: "message",
-            message: msg.message,
-            timestamp: Date.now().toString(),
-            fromId: connId,
-            sender: msg.sender,
-            echo: connection.Id==connId
-          }));
+    if (msg.type == "message" && msg.to == "ALL")
+      for (var connectionId in connections) {
+        if (connections.hasOwnProperty(connectionId)) {
+          var connection = connections[connectionId];
+          if (connection.ws.readyState == 1)
+            connection.ws.send(JSON.stringify({
+              type: "message",
+              message: msg.message,
+              timestamp: Date.now().toString(),
+              fromId: connId,
+              sender: connection.user,//msg.sender,
+              echo: connection.id == connId
+            }));
+        };
       };
-    };
   });
 
   ws.on("close", function () {
