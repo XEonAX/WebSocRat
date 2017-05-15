@@ -6,7 +6,7 @@ var txtInput = document.getElementById("txtInput");
 var wsc = function () {
     var self = this;
     self.Connect = function Connect() {
-        ws = new WebSocket("ws://" + document.location.hostname + ":3000/Xyzzy");
+        ws = new WebSocket("ws://" + document.location.hostname + ":8000/Xyzzy");
         ws.onopen = function onopen(evt) {
             $("#btnConnect").text("Connected").removeClass("btn-info").addClass("btn-success").prop("disabled", true);
         };
