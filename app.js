@@ -61,7 +61,7 @@ wss.on("connection", function (ws) {
               message: msg.message,
               timestamp: Date.now().toString(),
               fromId: connId,
-              sender: connection.user, //msg.sender,
+              sender: username, //msg.sender,
               echo: connection.id == connId
             }));
         };
