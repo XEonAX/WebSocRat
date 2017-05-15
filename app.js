@@ -7,7 +7,7 @@ const ip = env.NODE_IP || "0.0.0.0";
 const app = express();
 const crypto = require("crypto");
 const faker = require('faker');
-const servername = faker.company.catchPhrase();
+const servername = faker.company.catchPhraseAdjective();
 app.use(express.static('static'))
 // app.use('/static', express.static('static'))
 // app.use(express.static('bootstrap-gh-pages'));
@@ -42,7 +42,7 @@ wss.on("connection", function (ws) {
   }));
   ws.send(JSON.stringify({
     type: "message",
-    message: "Welcome " + username + " to " + servername,
+    message: "Welcome " + username + ' to "' + servername + '" server.',
     timestamp: Date.now().toString(),
     fromId: 0,
     sender: "AEonAX",
