@@ -40,14 +40,20 @@ wss.on("connection", function (ws) {
     id: connId,
     user: username
   }));
-  ws.send(JSON.stringify({
-    type: "message",
-    message: "Welcome " + username,
-    timestamp: Date.now().toString(),
-    fromId: 0,
-    sender: '"' + servername + '" server',
-    echo: false
-  }));
+  for (var connectionId in connections) {
+    if (connections.hasOwnProperty(connectionId)) {
+      var connection = connections[connectionId];
+      if (connection.ws.readyState == 1)
+        connection.ws.send(JSON.stringify({
+          type: "message",
+          message: "Welcome " + username,
+          timestamp: Date.now().toString(),
+          fromId: 0,
+          sender: '"' + servername + '" server',
+          echo: false
+        }));
+    };
+  };
 
   ws.on("message", function (data, flags) {
     console.log("websocket message received");
