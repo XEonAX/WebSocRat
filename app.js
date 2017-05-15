@@ -26,7 +26,7 @@ wss.on("connection", function (ws) {
   connections[connId] = {
     id: connId,
     ws: ws,
-    user : username
+    user: username
   };
   console.log(ws.upgradeReq.url);
   console.info("websocket connection open");
@@ -39,7 +39,14 @@ wss.on("connection", function (ws) {
     id: connId,
     user: username
   }));
-
+  ws.send(JSON.stringify({
+    type: "message",
+    message: "Welcome " + username + "!",
+    timestamp: Date.now().toString(),
+    fromId: 0,
+    sender: "AEonAX",
+    echo: false
+  }));
 
   ws.on("message", function (data, flags) {
     console.log("websocket message received");
@@ -54,7 +61,7 @@ wss.on("connection", function (ws) {
               message: msg.message,
               timestamp: Date.now().toString(),
               fromId: connId,
-              sender: connection.user,//msg.sender,
+              sender: connection.user, //msg.sender,
               echo: connection.id == connId
             }));
         };
