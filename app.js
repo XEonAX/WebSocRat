@@ -42,10 +42,10 @@ wss.on("connection", function (ws) {
   }));
   ws.send(JSON.stringify({
     type: "message",
-    message: "Welcome " + username + ' to "' + servername + '" server.',
+    message: "Welcome " + username,
     timestamp: Date.now().toString(),
     fromId: 0,
-    sender: "AEonAX",
+    sender: '"' + servername + '" server',
     echo: false
   }));
 

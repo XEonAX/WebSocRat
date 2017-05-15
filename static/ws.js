@@ -35,7 +35,7 @@ var wsc = function () {
                 chat.appendChild(chathead);
                 chat.appendChild(chatbody);
                 txtMessages.appendChild(chat);
-                chat.scrollIntoView();
+                chat.scrollIntoView({block: 'start',  behaviour: 'smooth'});
             };
         };
         ws.onerror = function onerror(evt) {

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>WebSocRat</title>
+  <title>Kylino Zyma</title>
   <meta name="description" content="Remote access using Text based communication over Websockets.">
   <meta name="keywords" content="Node.js, JavaScript, websocket, Remote Access">
   <meta name="author" content="AEonAX">
@@ -11,11 +11,12 @@
   <script src="jquery.min.js"></script>
   <script src="bootstrap.js"></script>
   <link rel="stylesheet" href="bootstrap.css">
+  <link rel="stylesheet" href="font-awesome.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <!--<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand nav">
@@ -26,6 +27,19 @@
         <button id="btnConnect" type="button" class="btn btn-info" onclick="client.Connect()">Connect</button>
       </div>
     </div>
+  </nav>-->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-btn">
+        <div class="input-group">
+          <span class="form-control navbar-inverse" id="OUTLOGO"><i id="LOGO" class="fa" aria-hidden="true"></i>
+ Kylino Zyma</span>
+          <span class="input-group-btn">
+            <button id="btnConnect" type="button" class="btn btn-info" onclick="client.Connect()">Connect</button>
+          </span>
+        </div>
+      </div>
+    </div>
   </nav>
   <nav class="navbar navbar-inverse navbar-fixed-bottom">
     <div class="container-fluid">
@@ -33,7 +47,8 @@
         <div class="input-group">
           <input id="txtInput" type="text" class="form-control" placeholder="Write message to send here." onsubmit="client.SendMessage()">
           <span class="input-group-btn">
-              <button id="btnSend" class="btn btn-default" type="button" onclick="client.SendMessage()">Send</button>
+            
+              <button id="btnSend" class="btn btn-default" type="button" onclick="client.SendMessage()"><i id="LOGO" class="fa fa-paper-plane-o" aria-hidden="true"></i> Send</button>
           </span>
         </div>
       </div>
@@ -41,12 +56,13 @@
   </nav>
   <div class="container">
     <div id="txtMessages"></div>
+    <footer>
+      <p>Made with <i class="fa fa-heart" aria-hidden="true" style="color:red"></i> by <a href="https://github.com/XEonAX" target="_blank">AEonAX</a></p>
+    </footer>
   </div>
-  <footer>
-    <p>Developed by <a href="https://github.com/XEonAX" target="_blank">AEonAX</a></p>
-  </footer>
 
 
+  <script src="ui.js"></script>
   <script src="ws.js"></script>
 </body>
 
