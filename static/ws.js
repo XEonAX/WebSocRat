@@ -3,10 +3,16 @@ var ws;
 var connectLI = document.getElementById("connLI");
 var txtMessages = document.getElementById("txtMessages");
 var txtInput = document.getElementById("txtInput");
+var txtName = document.getElementById("txtName");
+var overlay = document.getElementById("overlay");
 var wsc = function () {
     var self = this;
+    self.Username = null;
     self.Connect = function Connect() {
-        ws = new WebSocket("ws://" + document.location.hostname + ":8000/Xyzzy");
+        if (self.Username == null)
+            ws = new WebSocket("ws://" + document.location.hostname + ":8000/Xyzzy");
+        else
+            ws = new WebSocket("ws://" + document.location.hostname + ":8000/Xyzzy?name=" + encodeURIComponent(self.Username));
         ws.onopen = function onopen(evt) {
             $("#btnConnect").text("Connected").removeClass("btn-info").addClass("btn-success").prop("disabled", true);
         };
@@ -35,7 +41,10 @@ var wsc = function () {
                 chat.appendChild(chathead);
                 chat.appendChild(chatbody);
                 txtMessages.appendChild(chat);
-                chat.scrollIntoView({block: 'start',  behaviour: 'smooth'});
+                chat.scrollIntoView({
+                    block: 'start',
+                    behaviour: 'smooth'
+                });
             };
         };
         ws.onerror = function onerror(evt) {
@@ -57,6 +66,27 @@ var wsc = function () {
             txtInput.value = "";
         };
     };
+    self.SetName = function SetName() {
+        self.Username = txtName.value;
+        if (self.Username.length == 0) return;
+        // $("#overlay").fadeOut("fast", function () {
+        //     self.Connect();
+        // });
+        location.search="?name=" + encodeURIComponent(self.Username);
+    }
 }
 
 var client = new wsc();
+
+var Requests = {
+    QueryString: function (item) {
+        var svalue = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"));
+        return svalue ? svalue[1] : svalue;
+    }
+}
+if (Requests.QueryString("name") != null) {
+    client.Username = Requests.QueryString("name");
+    $("#overlay").fadeOut("fast", function () {
+        client.Connect();
+    });
+}

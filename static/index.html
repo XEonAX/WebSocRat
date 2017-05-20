@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Kylino Zyma</title>
+  <title>Websocket RAT</title>
   <meta name="description" content="Remote access using Text based communication over Websockets.">
   <meta name="keywords" content="Node.js, JavaScript, websocket, Remote Access">
   <meta name="author" content="AEonAX">
@@ -15,32 +15,41 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-  <!--<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand nav">
-          <span class="glyphicon glyphicon-transfer"></span> Kylino Zyma
-        </a>
-      </div>
-      <div class="navbar-form navbar-right">
-        <button id="btnConnect" type="button" class="btn btn-info" onclick="client.Connect()">Connect</button>
-      </div>
+<body style="display:none;">
+  <div id="overlay" class="container overlay">
+    <div class="overlay-content">
+      <h2 class="form-intro-heading overlay-control">What's Your Name?</h2>
+      <label for="txtName" class="sr-only">Kylino Zima</label>
+      <input id="txtName" class="form-control overlay-control" placeholder="Kylino Zima" required="Yes" autofocus="">
+      <button class="btn btn-primary btn-block overlay-control" type="button" onclick="client.SetName()">Set</button>
+      </form>
     </div>
-  </nav>-->
+  </div>
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-btn">
         <div class="input-group">
-          <span class="form-control navbar-inverse" id="OUTLOGO"><i id="LOGO" class="fa" aria-hidden="true"></i>
- Kylino Zyma</span>
+          <span class="form-control navbar-inverse whitetext"><i id="LOGO" class="fa" aria-hidden="true"></i>
+ WebSocRat</span>
           <span class="input-group-btn">
-            <button id="btnConnect" type="button" class="btn btn-info" onclick="client.Connect()">Connect</button>
+            <button id="btnConnect" type="button" class="btn btn-info btn-top" onclick="client.Connect()">Connect</button>
           </span>
         </div>
       </div>
     </div>
   </nav>
+  <!--<nav class="navbar navbar-inverse navbar-fixed-top navbar-fixed-top2">
+    <div class="container-fluid">
+      <div class="navbar-btn">
+        <div class="input-group">
+          <input type="text" class="form-control navbar-inverse whitetext" id="txtName">
+          <span class="input-group-btn">
+            <button id="btnSetName" type="button" class="btn btn-info btn-top" onclick="client.SetName()">Set Name</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>-->
   <nav class="navbar navbar-inverse navbar-fixed-bottom">
     <div class="container-fluid">
       <div class="navbar-btn">
@@ -57,7 +66,8 @@
   <div class="container">
     <div id="txtMessages"></div>
     <footer>
-      <p>Made with <i class="fa fa-heart" aria-hidden="true" style="color:red"></i> by <a href="https://github.com/XEonAX" target="_blank">AEonAX</a></p>
+      <p style="font-size: 0.7em">Made with <i class="fa fa-heart" aria-hidden="true" style="color:royalblue"></i> by <a href="https://github.com/XEonAX"
+          target="_blank">AEonAX</a></p>
     </footer>
   </div>
 

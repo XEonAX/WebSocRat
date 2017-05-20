@@ -8,7 +8,7 @@ const app = express();
 const crypto = require("crypto");
 const faker = require('faker');
 const servername = faker.company.catchPhraseAdjective();
-app.use(express.static('static'))
+app.use(express.static('static'));
 // app.use('/static', express.static('static'))
 // app.use(express.static('bootstrap-gh-pages'));
 app.get('/health', function (req, res, next) {
@@ -22,14 +22,25 @@ var wss = new WebSocketServer({
   server: server
 });
 wss.on("connection", function (ws) {
+  console.log(ws.upgradeReq.url);
+  var Requests = {
+    QueryString: function (item) {
+      var svalue = ws.upgradeReq.url.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"));
+      return svalue ? svalue[1] : svalue;
+    }
+  }
+
   var connId = crypto.randomBytes(16).toString("hex");
-  var username = faker.internet.userName();
+  var username = null;
+  if (Requests.QueryString("name") != null)
+    username =decodeURIComponent(decodeURIComponent(Requests.QueryString("name")));
+  else
+    username = faker.internet.userName();
   connections[connId] = {
     id: connId,
     ws: ws,
     user: username
   };
-  console.log(ws.upgradeReq.url);
   console.info("websocket connection open");
 
   var timestamp = new Date().getTime();

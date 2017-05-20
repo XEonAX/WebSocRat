@@ -1,18 +1,64 @@
+
+/*@import url('https://fonts.googleapis.com/css?family=Pacifico');*/
+/*@import url('https://fonts.googleapis.com/css?family=Satisfy');*/
+
 body {
   padding-top: 60px;
   padding-bottom: 50px;
+  /*font-family: 'Pacifico', cursive;*/
 }
+
 .starter-template {
   padding: 40px 15px;
   text-align: center;
 }
 
-.navbar .center{
+.navbar .center {
   text-align: center;
 }
 
-#OUTLOGO{
+.whitetext {
   color: white;
   border-color: darkgray;
   white-space: nowrap;
+}
+
+.navbar-fixed-top2 {
+  top: 50px;
+}
+
+.btn-top {
+  width: 90px;
+}
+
+.overlay {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  position: absolute;
+  z-index: 2000;
+  top: 0;
+  display: table;
+  width: 100%;
+}
+
+.overlay-content {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  width: 100%;
+  margin: 0 auto;
+}
+.overlay-control {
+  margin: 10px auto;
+  height: 45px;
+}
+#txtName{
+  /*font-family: 'Satisfy', cursive;*/
+}
+.form-intro-heading{
+  color: white;
+}
+.hide{
+  display: none;
 }
